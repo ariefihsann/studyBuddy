@@ -1,8 +1,26 @@
+
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 
-const stories = [
+type Story = {
+  name: string;
+  emoji: string;
+  color: string;
+};
+
+type Discussion = {
+  tag: string;
+  title: string;
+  description: string;
+  author: string;
+  category: string;
+  date: string;
+  time: string;
+  members: number;
+};
+
+const stories: Story[] = [
   { name: "Alya", emoji: "👩🏻‍🎓", color: "#dce9ff" },
   { name: "Bima", emoji: "👨🏻‍💻", color: "#f9e2d5" },
   { name: "Nadia", emoji: "👩🏽‍🎓", color: "#e7ddff" },
@@ -10,10 +28,11 @@ const stories = [
   { name: "Salsa", emoji: "👩🏼‍💻", color: "#ffe7c8" },
 ];
 
-const discussions = [
+const discussions: Discussion[] = [
   {
     tag: "Diskusi",
-    title: "Fundamental UI/UX Design untuk pemula dan cara penerapannya dalam project live",
+    title:
+      "Fundamental UI/UX Design untuk pemula dan cara penerapannya dalam project live",
     description:
       "Belajar dasar UI/UX bersama teman komunitas dan praktik membuat desain yang lebih menarik.",
     author: "Fresti Herdiansyah",
@@ -35,12 +54,20 @@ const discussions = [
   },
 ];
 
+const navigation = [
+  { label: "Home", icon: "⌂" },
+  { label: "Chat", icon: "☏" },
+  { label: "Room Server", icon: "◉" },
+  { label: "Jadwal", icon: "▣" },
+  { label: "Profil", icon: "♙" },
+];
+
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState("Home");
   const [search, setSearch] = useState("");
   const [discussionIndex, setDiscussionIndex] = useState(0);
-  const [joined, setJoined] = useState([]);
-  const [groups, setGroups] = useState([]);
+  const [joined, setJoined] = useState<string[]>([]);
+  const [groups, setGroups] = useState<string[]>([]);
   const [showGroupForm, setShowGroupForm] = useState(false);
   const [groupName, setGroupName] = useState("");
 
@@ -50,18 +77,19 @@ export default function HomePage() {
     item.title.toLowerCase().includes(search.toLowerCase())
   );
 
-  function joinDiscussion(title) {
+  function joinDiscussion(title: string) {
     setJoined((previous) =>
       previous.includes(title) ? previous : [...previous, title]
     );
   }
 
-  function createGroup(e) {
+  function createGroup(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (!groupName.trim()) return;
+    const name = groupName.trim();
+    if (!name) return;
 
-    setGroups((previous) => [...previous, groupName.trim()]);
+    setGroups((previous) => [...previous, name]);
     setGroupName("");
     setShowGroupForm(false);
   }
@@ -142,7 +170,7 @@ export default function HomePage() {
 
             <button
               className="story-item"
-              onClick={() => alert("Fitur tambah story dapat dikembangkan.")}
+              onClick={() => alert("Fitur tambah story belum tersedia.")}
             >
               <span className="story-add">+</span>
               <span>Tambah</span>
@@ -155,10 +183,7 @@ export default function HomePage() {
             <h2>Up Coming Discussion</h2>
             <button
               className="text-link"
-              onClick={() => {
-                setSearch("");
-                setActiveTab("Room Server");
-              }}
+              onClick={() => setActiveTab("Room Server")}
             >
               Lihat semuanya ›
             </button>
@@ -175,46 +200,59 @@ export default function HomePage() {
               Tidak ada diskusi yang cocok dengan pencarianmu.
             </div>
           ) : (
-            <article className="discussion-card">
-              <div className="discussion-tags">
-                <span className="tag tag-blue">◷ {currentDiscussion.date}</span>
-                <span className="tag">{currentDiscussion.tag}</span>
-              </div>
+            <div className="discussion-list">
+              {filteredDiscussions.map((item) => {
+                const isJoined = joined.includes(item.title);
 
-              <h3>{currentDiscussion.title}</h3>
-              <p className="discussion-description">
-                {currentDiscussion.description}
-              </p>
+                return (
+                  <article
+                    className="discussion-card"
+                    key={item.title}
+                  >
+                    <div className="discussion-tags">
+                      <span className="tag tag-blue">
+                        ◷ {item.date}
+                      </span>
+                      <span className="tag">{item.tag}</span>
+                    </div>
 
-              <div className="discussion-author">
-                <div className="author-avatar">👨🏻‍💻</div>
-                <div className="author-info">
-                  <strong>{currentDiscussion.author}</strong>
-                  <span>{currentDiscussion.category}</span>
-                </div>
-                <button
-                  className="btn btn-primary join-button"
-                  onClick={() => joinDiscussion(currentDiscussion.title)}
-                >
-                  {joined.includes(currentDiscussion.title)
-                    ? "Joined ✓"
-                    : "Join"}
-                </button>
-              </div>
+                    <h3>{item.title}</h3>
+                    <p className="discussion-description">
+                      {item.description}
+                    </p>
 
-              <div className="discussion-meta">
-                <span>👥 {currentDiscussion.members} peserta</span>
-                <span>◷ {currentDiscussion.time}</span>
-              </div>
-            </article>
+                    <div className="discussion-author">
+                      <div className="author-avatar">👨🏻‍💻</div>
+                      <div className="author-info">
+                        <strong>{item.author}</strong>
+                        <span>{item.category}</span>
+                      </div>
+                      <button
+                        className="btn btn-primary join-button"
+                        onClick={() => joinDiscussion(item.title)}
+                      >
+                        {isJoined ? "Joined ✓" : "Join"}
+                      </button>
+                    </div>
+
+                    <div className="discussion-meta">
+                      <span>👥 {item.members} peserta</span>
+                      <span>◷ {item.time}</span>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
           )}
 
           <div className="carousel-dots">
             {discussions.map((item, index) => (
               <button
                 key={item.title}
-                className={index === discussionIndex ? "active" : ""}
-                aria-label={`Diskusi ${index + 1}`}
+                className={
+                  index === discussionIndex ? "active" : ""
+                }
+                aria-label={`Tampilkan diskusi ${index + 1}`}
                 onClick={() => setDiscussionIndex(index)}
               />
             ))}
@@ -236,7 +274,10 @@ export default function HomePage() {
           <section className="my-groups">
             <h2>Grup Saya</h2>
             {groups.map((group, index) => (
-              <div className="group-item" key={`${group}-${index}`}>
+              <div
+                className="group-item"
+                key={`${group}-${index}`}
+              >
                 <span>👥</span>
                 <strong>{group}</strong>
                 <span className="group-status">Grup dibuat</span>
@@ -244,64 +285,62 @@ export default function HomePage() {
             ))}
           </section>
         )}
-
-        {showGroupForm && (
-          <div className="modal-backdrop">
-            <form className="group-modal" onSubmit={createGroup}>
-              <button
-                type="button"
-                className="modal-close"
-                onClick={() => setShowGroupForm(false)}
-                aria-label="Tutup"
-              >
-                ×
-              </button>
-
-              <div className="feature-icon">👥</div>
-              <h2>Buat Grup Belajar</h2>
-              <p>Buat ruang untuk belajar bersama teman-temanmu.</p>
-
-              <label htmlFor="groupName">Nama grup</label>
-              <input
-                id="groupName"
-                value={groupName}
-                onChange={(e) => setGroupName(e.target.value)}
-                placeholder="Contoh: Belajar UI/UX"
-                required
-                autoFocus
-              />
-
-              <button type="submit" className="btn btn-primary login-submit">
-                Buat Grup
-              </button>
-            </form>
-          </div>
-        )}
       </div>
 
+      {showGroupForm && (
+        <div className="modal-backdrop">
+          <form className="group-modal" onSubmit={createGroup}>
+            <button
+              type="button"
+              className="modal-close"
+              onClick={() => setShowGroupForm(false)}
+              aria-label="Tutup"
+            >
+              ×
+            </button>
+
+            <div className="feature-icon">👥</div>
+            <h2>Buat Grup Belajar</h2>
+            <p>
+              Buat ruang untuk belajar bersama teman-temanmu.
+            </p>
+
+            <label htmlFor="groupName">Nama grup</label>
+            <input
+              id="groupName"
+              value={groupName}
+              onChange={(e) => setGroupName(e.target.value)}
+              placeholder="Contoh: Belajar UI/UX"
+              required
+            />
+
+            <button
+              type="submit"
+              className="btn btn-primary login-submit"
+            >
+              Buat Grup
+            </button>
+          </form>
+        </div>
+      )}
+
       <nav className="bottom-nav">
-        {[
-          ["Home", "⌂"],
-          ["Chat", "☏"],
-          ["Room Server", "◉"],
-          ["Jadwal", "▣"],
-          ["Profil", "♙"],
-        ].map(([label, icon]) => (
+        {navigation.map((item) => (
           <button
-            key={label}
+            key={item.label}
             className={`bottom-nav-item ${
-              activeTab === label ? "selected" : ""
+              activeTab === item.label ? "selected" : ""
             }`}
             onClick={() => {
-              setActiveTab(label);
+              setActiveTab(item.label);
 
-              if (label === "Profil") {
+              if (item.label === "Profil") {
                 window.location.href = "/login";
               }
             }}
           >
-            <span className="bottom-nav-icon">{icon}</span>
-            <span>{label}</span>
+            <span className="bottom-nav-icon">{item.icon}</span>
+            <span>{item.label}</span>
           </button>
         ))}
       </nav>

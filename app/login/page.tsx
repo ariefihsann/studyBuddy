@@ -1,6 +1,7 @@
+
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -8,7 +9,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
-  function handleSubmit(e) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
 
@@ -17,14 +18,14 @@ export default function LoginPage() {
       return;
     }
 
+    // Simulasi login, belum memverifikasi akun.
     window.location.href = "/home";
   }
 
   return (
     <main className="login-page">
       <a href="/" className="brand login-brand">
-        <span className="brand-icon">🎓</span>
-        StudyBuddy
+        🎓 StudyBuddy
       </a>
 
       <section className="login-card">
@@ -43,6 +44,7 @@ export default function LoginPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="email"
+            required
           />
 
           <div className="password-label">
@@ -58,12 +60,18 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
+              required
             />
+
             <button
               type="button"
               className="password-toggle"
               onClick={() => setShowPassword(!showPassword)}
-              aria-label={showPassword ? "Sembunyikan password" : "Tampilkan password"}
+              aria-label={
+                showPassword
+                  ? "Sembunyikan password"
+                  : "Tampilkan password"
+              }
             >
               {showPassword ? "🙈" : "👁"}
             </button>
@@ -90,19 +98,20 @@ export default function LoginPage() {
             type="button"
             className="social-button"
             onClick={() =>
-              alert("Login Google belum dihubungkan ke backend.")
+              alert("Login Google belum dihubungkan.")
             }
           >
-            <strong>G</strong> Google
+            G Google
           </button>
+
           <button
             type="button"
             className="social-button"
             onClick={() =>
-              alert("Login Apple belum dihubungkan ke backend.")
+              alert("Login Apple belum dihubungkan.")
             }
           >
-            <strong>●</strong> Apple
+            ● Apple
           </button>
         </div>
 
