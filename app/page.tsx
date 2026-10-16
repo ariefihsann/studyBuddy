@@ -1,25 +1,35 @@
+import Image from "next/image";
+import Link from "next/link";
 
 export default function LandingPage() {
   return (
     <main>
+      {/* Navbar */}
       <nav className="navbar">
-        <a href="/" className="brand">
-          <span className="brand-icon">🎓</span>
-          StudyBuddy
-        </a>
+        <Link href="/" className="brand flex items-center gap-2">
+          <Image
+            src="/images/logo study buddy 2.png"
+            alt="Logo Study Buddy"
+            width={36}
+            height={36}
+            className="object-contain"
+          />
+          <span className="font-bold text-lg">StudyBuddy</span>
+        </Link>
 
         <div className="nav-links">
           <a href="#fitur">Fitur</a>
           <a href="#tentang">Tentang Kami</a>
-          <a href="/login" className="btn btn-outline">
+          <Link href="/login" className="btn btn-outline">
             Masuk
-          </a>
-          <a href="/login" className="btn btn-primary">
+          </Link>
+          <Link href="/login" className="btn btn-primary">
             Gabung Sekarang
-          </a>
+          </Link>
         </div>
       </nav>
 
+      {/* Hero Section */}
       <section className="hero">
         <div className="hero-content">
           <span className="eyebrow">
@@ -38,9 +48,9 @@ export default function LandingPage() {
           </p>
 
           <div className="hero-actions">
-            <a href="/login" className="btn btn-primary btn-large">
+            <Link href="/login" className="btn btn-primary btn-large">
               Mulai Sekarang →
-            </a>
+            </Link>
             <a href="#fitur" className="btn btn-outline btn-large">
               Pelajari Fitur
             </a>
@@ -62,15 +72,17 @@ export default function LandingPage() {
           </div>
         </div>
 
+        {/* Hero Visual dengan Ilustrasi Gambar */}
         <div className="hero-visual">
-          <div className="hero-illustration">
-            <div className="illustration-circle">
-              <span>👩🏻‍💻</span>
-              <span>👨🏽‍🎓</span>
-              <span>👩🏼‍🎓</span>
-            </div>
-            <div className="illustration-book">📚</div>
-            <div className="illustration-caption">
+          <div className="hero-illustration overflow-hidden rounded-2xl shadow-lg border border-gray-100 bg-white p-2">
+            <Image
+              src="/images/orang belajar.jpg"
+              alt="Ilustrasi Orang Belajar"
+              width={420}
+              height={280}
+              className="w-full h-auto object-cover rounded-xl"
+            />
+            <div className="illustration-caption mt-2 text-center">
               <strong>Grow Together!</strong>
               <p>Belajar tidak harus sendirian.</p>
             </div>
@@ -85,6 +97,7 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Feature Section dengan Ikon Gambar */}
       <section id="fitur" className="features section">
         <div className="section-heading">
           <span className="eyebrow">FITUR STUDYBUDDY</span>
@@ -97,7 +110,15 @@ export default function LandingPage() {
 
         <div className="feature-grid">
           <article className="feature-card">
-            <div className="feature-icon">👥</div>
+            <div className="feature-icon mb-3">
+              <Image
+                src="/images/logo cari teman .jpg"
+                alt="Logo Cari Teman"
+                width={56}
+                height={56}
+                className="object-contain mx-auto"
+              />
+            </div>
             <h3>Temukan Teman</h3>
             <p>
               Temukan teman belajar dengan minat yang sama.
@@ -105,7 +126,15 @@ export default function LandingPage() {
           </article>
 
           <article className="feature-card">
-            <div className="feature-icon">💬</div>
+            <div className="feature-icon mb-3">
+              <Image
+                src="/images/logo diskusi.jpg"
+                alt="Logo Ruang Diskusi"
+                width={56}
+                height={56}
+                className="object-contain mx-auto"
+              />
+            </div>
             <h3>Ruang Diskusi</h3>
             <p>
               Bertukar ide dan menyelesaikan masalah bersama.
@@ -113,7 +142,15 @@ export default function LandingPage() {
           </article>
 
           <article className="feature-card">
-            <div className="feature-icon">📅</div>
+            <div className="feature-icon mb-3">
+              <Image
+                src="/images/logo jadwal belajar.jpg"
+                alt="Logo Jadwal Belajar"
+                width={56}
+                height={56}
+                className="object-contain mx-auto"
+              />
+            </div>
             <h3>Jadwal Belajar</h3>
             <p>
               Atur jadwal agar kegiatan belajarmu terorganisasi.
@@ -122,21 +159,30 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* CTA Section */}
       <section id="tentang" className="cta-section">
         <h2>Siap memulai perjalanan belajarmu?</h2>
         <p>
           Bergabung dengan StudyBuddy dan berkembang
           bersama teman-temanmu.
         </p>
-        <a href="/login" className="btn btn-white btn-large">
+        <Link href="/login" className="btn btn-white btn-large">
           Gabung StudyBuddy →
-        </a>
+        </Link>
       </section>
 
+      {/* Footer */}
       <footer className="footer">
-        <a href="/" className="brand">
-          🎓 StudyBuddy
-        </a>
+        <Link href="/" className="brand flex items-center justify-center gap-2 mb-2">
+          <Image
+            src="/images/logo study buddy 2.png"
+            alt="Logo Study Buddy"
+            width={30}
+            height={30}
+            className="object-contain"
+          />
+          <span className="font-bold">StudyBuddy</span>
+        </Link>
         <p>© 2026 StudyBuddy. Belajar bersama, tumbuh bersama.</p>
       </footer>
     </main>

@@ -1,7 +1,7 @@
-
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Image from "next/image";
 
 type Story = {
   name: string;
@@ -54,12 +54,13 @@ const discussions: Discussion[] = [
   },
 ];
 
+
 const navigation = [
-  { label: "Home", icon: "⌂" },
-  { label: "Chat", icon: "☏" },
-  { label: "Room Server", icon: "◉" },
-  { label: "Jadwal", icon: "▣" },
-  { label: "Profil", icon: "♙" },
+  { label: "Home", icon: "/images/Home.png" },
+  { label: "Chat", icon: "/images/chat.png" },
+  { label: "Room Server", icon: "/images/room server.png" },
+  { label: "Jadwal", icon: "/images/logo jadwal.png" },
+  { label: "Profil", icon: "/images/Profile.png" },
 ];
 
 export default function HomePage() {
@@ -96,9 +97,16 @@ export default function HomePage() {
 
   return (
     <main className="app-shell">
+      {/* Header dengan Logo Baru */}
       <header className="home-header">
-        <a href="/home" className="brand home-brand">
-          <span className="brand-icon">🎓</span>
+        <a href="/home" className="brand home-brand flex items-center gap-2">
+          <Image
+            src="/images/logo study buddy 2.png"
+            alt="Study Buddy Logo"
+            width={36}
+            height={36}
+            className="object-contain"
+          />
           <span>
             StudyBuddy
             <small>Belajar bersama, tumbuh bersama</small>
@@ -324,26 +332,34 @@ export default function HomePage() {
         </div>
       )}
 
-      <nav className="bottom-nav">
-        {navigation.map((item) => (
-          <button
-            key={item.label}
-            className={`bottom-nav-item ${
-              activeTab === item.label ? "selected" : ""
-            }`}
-            onClick={() => {
-              setActiveTab(item.label);
 
-              if (item.label === "Profil") {
-                window.location.href = "/login";
-              }
-            }}
-          >
-            <span className="bottom-nav-icon">{item.icon}</span>
-            <span>{item.label}</span>
-          </button>
-        ))}
-      </nav>
+<nav className="bottom-nav">
+  {navigation.map((item) => (
+    <button
+      key={item.label}
+      className={`bottom-nav-item ${
+        activeTab === item.label ? "selected" : ""
+      }`}
+      onClick={() => {
+        setActiveTab(item.label);
+
+        if (item.label === "Profil") {
+          window.location.href = "/login";
+        }
+      }}
+    >
+      <Image
+        src={item.icon}
+        alt={item.label}
+        width={24}
+        height={24}
+        className="bottom-nav-icon"
+      />
+      <span>{item.label}</span>
+    </button>
+  ))}
+</nav>
+
     </main>
   );
 }

@@ -1,7 +1,8 @@
-
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -24,13 +25,30 @@ export default function LoginPage() {
 
   return (
     <main className="login-page">
-      <a href="/" className="brand login-brand">
-        🎓 StudyBuddy
-      </a>
+      {/* Brand / Logo Utama Atas */}
+      <Link href="/" className="brand login-brand flex items-center gap-2">
+        <Image
+          src="/images/logo study buddy 2.png"
+          alt="Study Buddy Logo"
+          width={40}
+          height={40}
+          className="object-contain"
+        />
+        <span className="font-bold text-xl">StudyBuddy</span>
+      </Link>
 
       <section className="login-card">
-        <div className="login-welcome">
-          <div className="login-logo">👋</div>
+        <div className="login-welcome flex flex-col items-center text-center">
+          {/* Logo Study Buddy di Kartu Login */}
+          <div className="login-logo mb-2">
+            <Image
+              src="/images/logo study buddy 2.png"
+              alt="Study Buddy Logo"
+              width={80}
+              height={80}
+              className="object-contain"
+            />
+          </div>
           <h1>Selamat Datang!</h1>
           <p>Masuk untuk melanjutkan perjalanan belajarmu.</p>
         </div>
@@ -93,35 +111,50 @@ export default function LoginPage() {
           <span>atau masuk dengan</span>
         </div>
 
+        {/* Tombol Social Login dengan Ikon Gambar */}
         <div className="social-login">
           <button
             type="button"
-            className="social-button"
+            className="social-button flex items-center justify-center gap-2"
             onClick={() =>
               alert("Login Google belum dihubungkan.")
             }
           >
-            G Google
+            <Image
+              src="/images/Google.png"
+              alt="Google Logo"
+              width={20}
+              height={20}
+              className="object-contain"
+            />
+            <span>Google</span>
           </button>
 
           <button
             type="button"
-            className="social-button"
+            className="social-button flex items-center justify-center gap-2"
             onClick={() =>
               alert("Login Apple belum dihubungkan.")
             }
           >
-            ● Apple
+            <Image
+              src="/images/Apple logo.png"
+              alt="Apple Logo"
+              width={20}
+              height={20}
+              className="object-contain"
+            />
+            <span>Apple</span>
           </button>
         </div>
 
         <p className="signup-text">
-          Belum punya akun? <a href="/login">Daftar sekarang</a>
+          Belum punya akun? <Link href="/register">Daftar sekarang</Link>
         </p>
 
-        <a href="/" className="back-link">
+        <Link href="/" className="back-link">
           ← Kembali ke halaman utama
-        </a>
+        </Link>
       </section>
     </main>
   );
